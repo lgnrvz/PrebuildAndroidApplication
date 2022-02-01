@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        # Material Design Dimensions
+        These dimensions are provided as per Material Design Guidelines
+        to adhere to a 8 dp baseline grid. (With the exception of the
+        toolbar and notification bar.).
+        ## References
+        - https://www.google.com/design/spec/layout/metrics-keylines.html
+        - https://material.io/guidelines/style/typography.html#typography-typeface
+    -->
+
+    <!-- Margins & Padding, 8 dp baseline, https://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-baseline-grids -->
+    <dimen name="margin_padding_size_micro">4dp</dimen>
+    <dimen name="margin_padding_size_small">8dp</dimen>
+    <dimen name="margin_padding_size_medium">16dp</dimen>
+    <dimen name="margin_padding_size_large">24dp</dimen>
+    <dimen name="margin_padding_size_xlarge">32dp</dimen>
+    <dimen name="margin_padding_size_xxlarge">40dp</dimen>
+    <dimen name="margin_padding_size_xslarge">64dp</dimen>
+    <dimen name="margin_padding_size_xxxlarge">80dp</dimen>
+
+    <!-- icon -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">18dp</dimen>
+    <dimen name="icon_size_standard">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="extra_large_icon_size">64dp</dimen>
+
+    <!-- button -->
+    <dimen name="button_size_min_height">45dp</dimen>
+
+    <!-- image -->
+    <dimen name="image_launcher_size_ldpi">36dp</dimen>
+    <dimen name="image_launcher_size_mdpi">48dp</dimen>
+    <dimen name="image_launcher_size_hdpi">72dp</dimen>
+    <dimen name="image_launcher_size_xhdpi">96dp</dimen>
+    <dimen name="image_launcher_size_xxhdpi">144dp</dimen>
+    <dimen name="image_launcher_size_xxxhdpi">192dp</dimen>
+
+    <dimen name="image_toolbar_tab_size_ldpi">24dp</dimen>
+    <dimen name="image_toolbar_tab_size_mdpi">32dp</dimen>
+    <dimen name="image_toolbar_tab_size_hdpi">48dp</dimen>
+    <dimen name="image_toolbar_tab_size_xhdpi">64dp</dimen>
+    <dimen name="image_toolbar_tab_size_xxhdpi">96dp</dimen>
+    <dimen name="image_toolbar_tab_size_xxxhdpi">128dp</dimen>
+
+    <dimen name="image_notification_size_ldpi">18dp</dimen>
+    <dimen name="image_notification_size_mdpi">24dp</dimen>
+    <dimen name="image_notification_size_hdpi">36dp</dimen>
+    <dimen name="image_notification_size_xhdpi">48dp</dimen>
+    <dimen name="image_notification_size_xxhdpi">72dp</dimen>
+    <dimen name="image_notification_size_xxxhdpi">96dp</dimen>
+
+    <dimen name="image_background_w_size_ldpi">240dp</dimen>
+    <dimen name="image_background_w_size_mdpi">320dp</dimen>
+    <dimen name="image_background_w_size_hdpi">480dp</dimen>
+    <dimen name="image_background_w_size_xhdpi">768dp</dimen>
+    <dimen name="image_background_w_size_xxhdpi">1080dp</dimen>
+    <dimen name="image_background_w_size_xxxhdpi">1440dp</dimen>
+    <dimen name="image_background_h_size_ldpi">320dp</dimen>
+    <dimen name="image_background_h_size_mdpi">480dp</dimen>
+    <dimen name="image_background_h_size_hdpi">800dp</dimen>
+    <dimen name="image_background_h_size_xhdpi">1280dp</dimen>
+    <dimen name="image_background_h_size_xxhdpi">1920dp</dimen>
+    <dimen name="image_background_h_size_xxxhdpi">2560dp</dimen>
+
+    <!-- textfield -->
+    <dimen name="textfield_size_small">24dp</dimen>
+    <dimen name="textfield_size_normal">32dp</dimen>
+    <dimen name="textfield_size_large">64dp</dimen>
+
+    <!-- Launcher Icon Size, https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size -->
+    <dimen name="launcher_icon_size">@dimen/standard_touch_size</dimen>
+
+    <!-- Touch Target Size, https://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-touch-target-size-->
+    <dimen name="standard_touch_size">48dp</dimen>
+
+    <!-- Toolbar, 4 dp baseline, https://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-baseline-grids -->
+    <dimen name="toolbar_margin_size">4dp</dimen>
+    <dimen name="toolbar_icon_size">24dp</dimen>
+
+    <!-- Font sizes, https://material.io/guidelines/style/typography.html#typography-typeface -->
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_xlarge_min">25sp</dimen>
+    <dimen name="text_size_xlarge">34sp</dimen>
+    <dimen name="text_size_xxlarge">45sp</dimen>
+    <dimen name="text_size_xxxlarge">56sp</dimen>
+</resources>

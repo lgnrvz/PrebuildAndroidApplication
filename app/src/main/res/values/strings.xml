@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PrebuildApplication</string>
+    <string name="check_internet_connection">Please check your internet connection</string>
+</resources>
