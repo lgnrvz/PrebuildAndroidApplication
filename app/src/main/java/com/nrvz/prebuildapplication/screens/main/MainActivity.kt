@@ -138,8 +138,11 @@ class MainActivity : AppCompatActivity() {
         // never learns what a DetailActivity is - that keeps it testable.
         mAdapter = NoteAdapter(
             NoteRecyclerClick(
-                onClick = { note -> openDetail(note) },
-                onDeleteClick = { note -> confirmDelete(note) },
+                // Named arguments, so the mapping is obvious at the call site.
+                // The property names are `click` / `deleteClick` (not `onClick`) -
+                // see the pitfall note in NoteRecyclerClick.
+                click = { note -> openDetail(note) },
+                deleteClick = { note -> confirmDelete(note) },
             )
         )
         mBinding.recyclerViewNotes.adapter = mAdapter

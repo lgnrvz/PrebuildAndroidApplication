@@ -15,6 +15,9 @@ captures/
 *.apk
 output.json
 
+# Local secrets (API keys, keystore passwords) - NEVER commit these
+secrets.properties
+
 # IntelliJ
 *.iml
 .idea/

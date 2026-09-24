@@ -29,11 +29,20 @@ import com.nrvz.prebuildapplication.models.Note
  * AddressRecyclerClick...) - this is the trimmed-down version.
  */
 class NoteRecyclerClick(
-    /** Row tapped -> open the detail screen. */
-    val onClick: (Note) -> Unit,
+    /**
+     * Row tapped -> open the detail screen.
+     *
+     * PITFALL, AND IT BIT US HERE: do NOT name this property `onClick` when there
+     * is also an `onClick(...)` METHOD below. `fun onClick(model: Note) = onClick(model)`
+     * then resolves to itself, and the compiler reports
+     *     "type checking has run into a recursive problem"
+     * which does not sound like a naming problem at all. RockyGo names the
+     * property `click` and the method `onClick` - that is why. Keep it that way.
+     */
+    val click: (Note) -> Unit,
     /** Delete icon tapped -> remove the row. */
-    val onDeleteClick: (Note) -> Unit,
+    val deleteClick: (Note) -> Unit,
 ) {
-    fun onClick(model: Note) = onClick(model)
-    fun onDeleteClick(model: Note) = onDeleteClick(model)
+    fun onClick(model: Note) = click(model)
+    fun onDeleteClick(model: Note) = deleteClick(model)
 }
