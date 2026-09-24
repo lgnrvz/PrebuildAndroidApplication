@@ -1,0 +1,11 @@
+# Copy this file to `local.properties` (which is gitignored) on your machine.
+#
+# sdk.dir = where the Android SDK is installed on YOUR computer.
+#   macOS (Android Studio default): /Users/<you>/Library/Android/sdk
+#   Windows                        : C\:\\Users\\<you>\\AppData\\Local\\Android\\Sdk
+#   Linux                          : /home/<you>/Android/Sdk
+#
+# Android Studio usually writes this file for you the first time you open the
+# project. If Gradle says "SDK location not found", this is the missing piece.
+
+sdk.dir=/path/to/your/Android/Sdk

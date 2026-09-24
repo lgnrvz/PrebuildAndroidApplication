@@ -1,16 +1,45 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.PrebuildApplication" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+   themes.xml (night) — the dark-mode override.
+  ============================================================================
+
+  ONBOARDING NOTE
+  ===============
+  Android picks the file in values-night/ automatically when the system is in
+  dark mode (from API 29; on older versions it depends on the device's
+  uiMode, which is why `DayNight` parents are worth using).
+
+  SAME STYLE NAME, DIFFERENT VALUES. You do not add a style here unless the
+  style already exists in values/. Only the attributes that CHANGE are listed;
+  anything omitted falls back to the values/ version.
+
+  WHY WE ONLY OVERRIDE COLOURS: the layout does not know or care which theme it
+  is running under. Because every colour comes from a theme attribute, dark mode
+  is 100% handled by this one file. Hardcode a hex in a layout and you have just
+  broken dark mode for that view.
+-->
+<resources>
+
+    <style name="Theme.PrebuildApplication" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">@color/colorAccent</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+        <!-- Dark surfaces and light text: the only two lines that really matter here. -->
+        <item name="android:windowBackground">#121417</item>
+        <item name="colorSurface">#1C1F23</item>
+        <item name="colorOnSurface">#E6E8EA</item>
+
+        <item name="colorError">#FF6B6B</item>
+
+        <item name="android:statusBarColor">#121417</item>
+        <item name="android:navigationBarColor">#121417</item>
     </style>
+
 </resources>

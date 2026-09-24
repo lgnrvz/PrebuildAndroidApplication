@@ -1,9 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".screens.activities.MainActivity">
+<!--
+  ============================================================================
+   activity_main.xml — the list screen.
+  ============================================================================
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  ONBOARDING NOTE — THE FOUR RULES OF A DATA BINDING LAYOUT
+  =========================================================
+  1. The root element is <layout>, NOT your ViewGroup.
+  2. `<?xml ... ?>` must be line 1 and only line 1. A comment above it, or a
+     duplicated declaration lower down, fails the build with "The processing
+     instruction target matching [xX][mM][lL] is not allowed".
+  3. Declare xmlns:android, xmlns:app and xmlns:tools on <layout>. Using an
+     `app:` attribute without xmlns:app fails with "AttributePrefixUnbound".
+  4. <data> declares the variables your @{...} expressions may use. Without a
+     <variable>, there is no `viewModel` to reference.
+
+  HOW THE PIECES CONNECT
+  ======================
+  initBinding() sets `mBinding.viewModel = mViewModel` AND
+  `mBinding.lifecycleOwner = this`. That second line is what lets
+  @{viewModel.notes} observe a LiveData - forget it and the list silently stays
+  empty with no error anywhere.
+
+  `app:list_data` is OUR attribute, declared in utilities/BindingAdapter.kt. It
+  shows up in the IDE as an error until that file is compiled once - ignore the
+  red, build it.
+-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <!--
+          The type attribute is the FULL class path. This is how the layout gets
+          compile-time-checked access to your Kotlin code: rename a ViewModel
+          method and the build fails here, immediately.
+        -->
+        <variable
+            name="viewModel"
+            type="com.nrvz.prebuildapplication.viewmodels.MainViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="@string/app_name"
+                    app:titleTextColor="@color/white" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <!--
+              Search box. Notice there is NO android:text binding here.
+              A one-way binding on an EditText fights the user's typing (the
+              cursor jumps to the start on every keystroke). Editable fields need
+              either a TextWatcher (what we do - with a debounce, see
+              MainActivity.initEventListener) or TWO-WAY binding, which you can
+              see in activity_detail.xml.
+            -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutSearch"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textInputLayoutSearch"
+                tools:visibility="visible" />
+
+            <!--
+              app:list_data -> utilities/BindingAdapter.kt -> NoteAdapter.submitList().
+              The LayoutManager is declared here so all list configuration is in
+              one visible place.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewNotes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/margin_padding_size_xxlarge"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/textViewVersion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progressBar"
+                app:list_data="@{viewModel.notes}"
+                tools:listitem="@layout/item_note" />
+
+            <!--
+              Empty state. Toggled by the notes observer in MainActivity using the
+              showIf() extension - the boolean decision stays in Kotlin, the layout
+              stays declarative.
+            -->
+            <TextView
+                android:id="@+id/textViewEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_notes"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/recyclerViewNotes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/recyclerViewNotes"
+                tools:visibility="visible" />
+
+            <!--
+              Version footer. HOUSE RULE: show BuildConfig.VERSION_NAME somewhere
+              on screen and bump versionName on every push. It is how we prove the
+              installed APK is the build we just shipped.
+            -->
+            <TextView
+                android:id="@+id/textViewVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_size_small"
+                android:textColor="@color/textSecondary"
+                android:textSize="@dimen/text_size_micro"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="v1.1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--
+          CoordinatorLayout + layout_gravity is what lets the FAB sit above the
+          list and move out of the way of a Snackbar.
+        -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/margin_padding_size_medium"
+            android:contentDescription="@string/content_desc_add_note"
+            android:src="@drawable/ic_add" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

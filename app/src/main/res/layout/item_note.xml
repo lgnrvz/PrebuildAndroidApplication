@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+   item_note.xml — ONE row of the list.
+  ============================================================================
+
+  ONBOARDING NOTE
+  ===============
+  The <variable name="note"> is filled in by NoteAdapter.ViewHolder.bind():
+      binding.note = item
+  Every @{note.xxx} below then resolves against that Note object.
+
+  A row layout MUST bind every field it displays. Omit one and it renders in its
+  default state - which looks like "the adapter is broken" but is really "the row
+  never got the value". When a RecyclerView row looks wrong, check the binding
+  FIRST, then the adapter.
+
+  The delete ImageButton is per-ROW state, so it is wired in the adapter with a
+  click listener (see NoteAdapter.bind), not with android:onClick.
+-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="note"
+            type="com.nrvz.prebuildapplication.models.Note" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        android:layout_marginEnd="@dimen/margin_padding_size_medium"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_padding_size_medium">
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_size_small"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{note.title}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/imageButtonDelete"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Welcome to the onboarding project" />
+
+            <!--
+              `note.preview` is a computed property on the Note model. Doing the
+              "first non-blank line, max 120 chars" trimming in ONE place means the
+              list and any future screen cannot disagree about what the preview is.
+            -->
+            <TextView
+                android:id="@+id/textViewBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_micro"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{note.preview}"
+                android:textColor="@color/textSecondary"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="@id/textViewTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+                tools:text="You are reading this from a Room database." />
+
+            <!--
+              app:tagText is a CUSTOM attribute (utilities/BindingAdapter.kt). It
+              joins the list into "room, livedata" and hides the view when empty -
+              logic that has no business living in XML.
+            -->
+            <TextView
+                android:id="@+id/textViewTags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_micro"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_micro"
+                app:tagText="@{note.tags}"
+                app:layout_constraintEnd_toEndOf="@id/textViewTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewBody"
+                tools:text="room, livedata" />
+
+            <ImageButton
+                android:id="@+id/imageButtonDelete"
+                android:layout_width="@dimen/standard_touch_size"
+                android:layout_height="@dimen/standard_touch_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/content_desc_delete_note"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -1,26 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nrvz.prebuildapplication">
+<!--
+  ============================================================================
+   AndroidManifest.xml — the app's ID card.
+  ============================================================================
 
+  ONBOARDING NOTE
+  ===============
+  WHAT LIVES HERE
+    <uses-permission>  : what the app is ALLOWED to do (internet, camera, ...)
+    <application>      : app-wide config - name, icon, label, theme
+    <activity>         : every screen. Forget to register one and you get
+                         ActivityNotFoundException at runtime, even though it
+                         compiled fine.
+    <intent-filter>    : makes an Activity launchable. The MAIN/LAUNCHER pair is
+                         what puts an icon in the app drawer.
+
+  THERE IS NO `package="..."` ATTRIBUTE. Since AGP 8 the namespace comes from
+  app/build.gradle (`namespace 'com.nrvz.prebuildapplication'`), and adding the
+  manifest attribute as well fails the build. If you copy a manifest from an
+  older project, delete that line.
+
+  `android:exported` is REQUIRED on any Activity with an intent-filter (API 31+).
+  The launcher Activity must be exported="true". Every other screen in this app
+  is exported="false" - nothing outside the app should be able to launch them,
+  so nothing outside the app can.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Networking. Required for Retrofit - without it every call throws. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Lets us tell the difference between "offline" and "server is down".
+         Checked by the hasInternet() extension in utilities/extension/Context.kt. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".PrebuildApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PrebuildApplication">
+
+        <!-- The launcher screen. Note ${applicationId} is implied by the leading dot. -->
         <activity
-            android:name=".screens.activities.MainActivity"
-            android:exported="true">
+            android:name=".screens.main.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Not exported: only our own code may open it. -->
+        <activity
+            android:name=".screens.detail.DetailActivity"
+            android:exported="false"
+            android:parentActivityName=".screens.main.MainActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -1,10 +1,33 @@
+// =============================================================================
+// settings.gradle — where Gradle learns which modules exist in this project.
+//
+// ONBOARDING NOTE
+// ----------------
+// This file used to pull dependencies from `jcenter()`. JCenter was shut down,
+// so any build that still points at it fails with an unresolved-dependency
+// error. It was removed here. If you ever see `jcenter()` in an old project,
+// delete it and use `google()` + `mavenCentral()` instead.
+//
+// `RepositoriesMode.FAIL_ON_PROJECT_REPOS` forbids modules from declaring their
+// own repositories. All dependency sources live HERE, in one place — that is
+// why app/build.gradle has no `repositories { }` block.
+// =============================================================================
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
     }
 }
+
 rootProject.name = "PrebuildApplication"
 include ':app'

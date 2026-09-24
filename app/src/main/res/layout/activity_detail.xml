@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+   activity_detail.xml — create / edit one note.
+  ============================================================================
+
+  ONBOARDING NOTE — TWO-WAY BINDING (@={ })
+  =========================================
+  One-way:  android:text="@{viewModel.title}"    Kotlin -> view  (read only)
+  Two-way:  android:text="@={viewModel.title}"   Kotlin <-> view (both ways)
+
+  The extra `=` is the whole difference. With two-way binding the user's typing
+  writes itself into the ViewModel - no TextWatcher, no collecting EditText values
+  on save, and loading an existing note fills the fields automatically. The
+  ViewModel method that triggers redraw is the same one either way.
+
+  REQUIREMENT: the bound property must be WRITABLE. That is why DetailViewModel
+  exposes `val title = MutableLiveData("")` instead of the usual
+  private-MutableLiveData + public-LiveData pair. If the binding stops updating,
+  this is the first thing to check.
+
+  app:errorText is our custom adapter (@BindingAdapter("errorText")) wrapping
+  TextInputLayout.setError().
+-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.nrvz.prebuildapplication.viewmodels.DetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:titleTextColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:title="Edit note" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.titleError}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_title"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:text="@={viewModel.title}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutBody"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            app:layout_constraintBottom_toTopOf="@id/textInputLayoutTags"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutTitle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextBody"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|start"
+                android:hint="@string/hint_body"
+                android:inputType="textMultiLine|textCapSentences"
+                android:text="@={viewModel.body}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTags"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            app:helperText="@string/helper_tags"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutBody">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_tags"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="@={viewModel.tags}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/margin_padding_size_small"
+            android:text="@string/action_save"
+            app:layout_constraintEnd_toStartOf="@id/buttonDelete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutTags" />
+
+        <!--
+          Outlined + red = the house look for a destructive action. Deleting a note
+          that does not exist yet is meaningless, so DetailActivity.initBinding()
+          hides this button in CREATE mode with showIf().
+        -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDelete"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            android:text="@string/action_delete"
+            android:textColor="@color/colorError"
+            app:cornerRadius="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/buttonSave"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutTags"
+            app:strokeColor="@color/colorError" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

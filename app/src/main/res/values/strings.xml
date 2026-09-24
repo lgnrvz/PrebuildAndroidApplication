@@ -1,4 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+   strings.xml — every piece of user-visible text.
+  ============================================================================
+
+  ONBOARDING NOTE
+  ===============
+  RULE: no hardcoded strings in layouts OR in Kotlin. If a user can read it, it
+  lives here, and you reference it as @string/name (XML) or R.string.name (code).
+
+  THREE reasons this rule exists, and all three have bitten us:
+    1. Translation. Adding a second language then means adding values-<locale>/,
+       not hunting through 200 files.
+    2. Typos are fixed in one place. "Your oder has been placed" was shipped once.
+    3. Two screens showing the same thing must match. Same key, same words.
+
+  FORMAT STRINGS (%1$s, %1$d) are how you build a sentence in code:
+      getString(R.string.version_format, BuildConfig.VERSION_NAME)
+  Do NOT concatenate fragments ("v" + version) - other languages put the number
+  in a different position, and the fragments become untranslatable.
+-->
 <resources>
+
     <string name="app_name">PrebuildApplication</string>
+
+    <!-- Appended to the app name, shown in the list footer. -->
+    <string name="version_format">v%1$s</string>
+
+    <!-- ===== List screen ===== -->
+    <string name="hint_search">Search notes…</string>
+    <string name="empty_notes">No notes yet.\nTap + to write one, or sync from the server.</string>
+    <string name="action_sync">Sync from server</string>
+    <string name="content_desc_add_note">Add a note</string>
+    <string name="content_desc_delete_note">Delete this note</string>
+
+    <!-- ===== Detail screen ===== -->
+    <string name="title_new_note">New note</string>
+    <string name="title_edit_note">Edit note</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_body">Write something…</string>
+    <string name="hint_tags">Tags</string>
+    <string name="helper_tags">Comma-separated, e.g. work, urgent</string>
+    <string name="action_save">Save</string>
+
+    <!-- ===== Dialogs ===== -->
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="dialog_delete_title">Delete note</string>
+    <string name="dialog_delete_message">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="dialog_delete_message_simple">This cannot be undone.</string>
+
+    <!-- ===== Errors ===== -->
     <string name="check_internet_connection">Please check your internet connection</string>
+
 </resources>
